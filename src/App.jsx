@@ -208,7 +208,7 @@ export default function App() {
 
       {/* HERO */}
       <div className="hero" id="hero">
-        <p className="hero-eyebrow">Tourism Capital of Nepal · Officially declared 2024</p>
+        <p className="hero-eyebrow">Tourism Capital of Nepal · Officially declared 
         <h1>Where the <em>Himalayas</em> meet the lake</h1>
         <p className="hero-desc">
           Pokhara sits at 827 metres in the Gandaki Province of western Nepal, cradled between the world's highest mountains and the shimmering waters of Phewa Lake. It is Nepal's second-largest city and its adventure capital — the starting point for legendary Himalayan treks, a base for paragliding over clouds, and a place where evenings slow down to the rhythm of oars on still water.
