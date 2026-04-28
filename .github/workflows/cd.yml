@@ -1,0 +1,45 @@
+name: CD - Deploy to EC2
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Copy files to EC2 via SCP
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          source: "."
+          target: "/home/${{ secrets.EC2_USER }}/app"
+          rm: true
+
+      - name: SSH into EC2 and deploy
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/$USER/app
+
+            docker build -t tourism-app:latest .
+
+            docker stop tourism-app || true
+            docker rm tourism-app || true
+
+            docker run -d \
+              --name tourism-app \
+              --restart always \
+              -p 80:80 \
+              tourism-app:latest
+
+            echo "Done - app running on port 80"
